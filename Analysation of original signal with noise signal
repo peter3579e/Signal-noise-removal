@@ -1,0 +1,47 @@
+%Orginal signal
+subplot(4,2,1)
+plot(signal)
+title('orignal signal')
+
+
+x=2^nextpow2(length(signal));
+y= fft(signal,x);
+Fs= 50 ; % insert here your frequency sampling in Hz
+N=length(signal);
+freqHz = (0:1:length(abs(y))-1)*Fs/N;
+subplot(4,2,2)
+plot(freqHz,abs(y))
+xlabel('Hz')
+title('Furior transform original signal')
+
+%noise 
+subplot(4,2,3)
+plot(noise)
+title("noise signal")
+
+s=2^nextpow2(length(noise));
+o= fft(noise,s);
+Fs= 50 ; % insert here your frequency sampling in Hz
+N=length(noise);
+freqHz = (0:1:length(abs(o))-1)*Fs/N;
+subplot(4,2,4)
+plot(freqHz,abs(o))
+xlabel('Hz')
+title('Furior transform original signal')
+
+%Signal with noise
+subplot(4,2,5)
+B=signal+50*noise;
+plot(B)
+title('the signal with noise')
+
+yfft=length(B);
+yfft2=2^nextpow2(yfft);
+yff= fft(B,yfft2);
+Fs= 50 ; % insert here your frequency sampling in Hz
+N=length(B);
+freqHz = (0:1:length(abs(yff))-1)*Fs/N;
+subplot(4,2,6)
+plot(freqHz,abs(yff))
+xlabel('Hz')
+title('Furior transform signal')
