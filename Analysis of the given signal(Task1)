@@ -1,0 +1,158 @@
+close all, hold on
+Fs= 1000 ; % insert here your frequency sampling in Hz
+N=length(signal);
+Ts=1/Fs;
+freqHz = (0:1:N-1)*Ts;
+L=length(signal)/2;
+z=signal+noise;
+freqHz5=(0:1:N)*Ts;
+freqHz6=(0:1:N-2)*Ts;
+
+
+%---------task1anaysthesignal------------ 
+
+plot(freqHz,signal)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("The original signal")
+figure
+plot(freqHz,z)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("The signal with noise")
+
+%----------------------------
+figure 
+filter=[1,-1];
+newdata=conv2(z,filter);
+plot(freqHz5,newdata,freqHz,z)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("The result of Moving difference fileter")
+
+
+
+hold on
+figure 
+subplot(5,2,1)
+s1=signal(1:294);
+z1=z(1:294);
+N1=length(s1);
+freqHz1 = (0:1:N1-1)/Fs;
+plot(freqHz1,s1,freqHz1,z1);
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("S1")
+
+p1 = 2^nextpow2(L); 
+p2 = fft(s1,p1)/L;
+p3 = Fs/2*linspace(0,1,p1/2+1);
+p4=2*abs(p2(1:p1/2+1));
+
+subplot(5,2,2);
+NFFT = 2^nextpow2(L); 
+Y = fft(z1,NFFT)/L;
+f1 = Fs/2*linspace(0,1,NFFT/2+1);
+Yp=2*abs(Y(1:NFFT/2+1));
+plot(f1,Yp,f1,p4)
+
+xlabel('Frequency(kHz)')
+ylabel('PWR(V)','Rotation',0)
+title("FFTS1")
+
+% subplot(6,2,2);
+% u=2^nextpow2(length(signal));
+% f= fft(z1,u); % insert here your frequency sampling in Hz
+% freqH = (0:1:length(abs(f))-1)*Fs/N;
+% plot(freqH,abs(f))
+% xlabel('Hz')
+% title('Furior transform original signal')
+
+
+%---------------------------
+
+subplot(5,2,3)
+s2=signal(294:589);
+z2=z(294:589);
+N2=length(s2);
+freqHz2 = (0:1:N2-1)/Fs;
+plot(freqHz2,s2,freqHz2,z2)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("S2")
+subplot(5,2,4);
+sf2 = 2^nextpow2(L); 
+Y2 = fft(z2,sf2)/L;
+f2 = Fs/2*linspace(0,1,sf2/2+1);
+YY2=2*abs(Y2(1:sf2/2+1));
+plot(f2,YY2) 
+xlabel('Frequency(kHz)')
+ylabel('PWR(V)','Rotation',0)
+title("FFTS2")
+
+%---------------------------
+
+subplot(5,2,5)
+s3=signal(589:1291);
+z3=z(589:1291);
+N3=length(s3);
+freqHz3 = (0:1:N3-1)/Fs;
+plot(freqHz3,s3,freqHz3,z3)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("S3")
+subplot(5,2,6);
+sf3 = 2^nextpow2(L); 
+Y3 = fft(s3,sf3)/L;
+f3 = Fs/2*linspace(0,1,sf3/2+1);
+plot(f3,2*abs(Y3(1:sf3/2+1))) 
+xlabel('Frequency(kHz)')
+ylabel('PWR(V)','Rotation',0)
+title("FFTS3")
+
+%---------------------------
+
+subplot(5,2,7)
+s4=signal(1291:1492);
+z4=z(1291:1492);
+N4=length(s4);
+freqHz4 = (0:1:N4-1)/Fs;
+plot(freqHz4,s4,freqHz4,z4)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("S4")
+subplot(5,2,8)
+sf4 = 2^nextpow2(L); 
+Y4 = fft(s4,sf4)/L;
+f4 = Fs/2*linspace(0,1,sf4/2+1);
+plot(f4,2*abs(Y4(1:sf4/2+1)))
+xlabel('Frequency(kHz)')
+ylabel('PWR(V)','Rotation',0)
+title("FFTS4")
+
+%---------------------------
+
+subplot(5,2,9)
+s5=signal(1492:2295);
+z5=z(1492:2295);
+N5=length(s5);
+freqHz4 = (0:1:N5-1)/Fs;
+plot(freqHz4,s5,freqHz4,z5)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("S5")
+subplot(5,2,10)
+sf5 = 2^nextpow2(L); 
+Y5 = fft(s5,sf5)/L;
+f5 = Fs/2*linspace(0,1,sf5/2+1);
+plot(f5,2*abs(Y5(1:sf5/2+1)))
+xlabel('Frequency(kHz)')
+ylabel('PWR(V)','Rotation',0)
+title("FFTS5")
+
+%-------------PSNR--------
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z1,s1,255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z2,s2,255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z3,s3,255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z4,s4,255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z5,s5,255));
