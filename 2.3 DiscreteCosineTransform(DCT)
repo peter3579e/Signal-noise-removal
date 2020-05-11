@@ -1,0 +1,87 @@
+close all, hold on
+% x = s1;
+% X = dct(x);
+% [XX,ind] = sort(abs(X),'descend');
+% i = 1;
+% while norm(X(ind(1:i)))/norm(X) < 0.9999999999
+%    i = i + 1;
+% end
+
+N=400;
+H=dct(eye(N));
+inputsignal=z5;
+comparesignal=s5;
+lengthz=length(inputsignal);
+hello5(1:lengthz)=0;
+CCC=dct(eye(rem(lengthz,N)));
+precentage=400;
+
+if rem(lengthz,N)>=1
+for i=1:fix(lengthz/N)
+    YY=H*inputsignal(1+(i-1)*N:i*N)';
+    YY1=YY(:)';
+     YY1(precentage:N)=0;
+    Fix=idct(YY1);
+    hello5(1+(i-1)*N:i*N)=Fix;
+end
+     zzz=rem(lengthz,N);
+     YYY=CCC*inputsignal(fix(lengthz/N)*N+1:fix(lengthz/N)*N+zzz)';
+     YYY(precentage:rem(lengthz,N))=0;
+     Fixx=idct(YYY);
+     hello5(1+fix(lengthz/N)*N:fix(lengthz/N)*N+zzz)=Fixx;
+else
+    for i=1:lengthz/N
+    YY=H*inputsignal(1+(i-1)*N:i*N)';
+    YY(precentage:N)=0;
+    Fix=idct(YY);
+    hello5(1+(i-1)*N:i*N)=Fix;
+    
+    end
+end
+
+
+%plot([comparesignal;hello]')
+%legend('Original',['Reconstructed, N = ' int2str(N)],['Presentage, P = ' int2str(precentage)],['PSNR=' int2str(psnr(hello,s1,255))],'Location','SouthEast')
+
+%fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(inputsignal,comparesignal,255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(hello5,comparesignal,255));
+
+
+
+
+% x = z1
+% X = dct(x);
+% [XX,ind] = sort(abs(X),'descend');
+% i = 1;
+% while norm(X(ind(1:i)))/norm(X) < 0.999
+%    i = i + 1;
+% end
+% needed = i;
+% 
+% 
+%X(ind(needed+1:end)) = 0;
+% xx = idct(X);
+% 
+% 
+% plot([s1;xx]')
+% legend('Original',['Reconstructed, N = ' int2str(needed)], ...
+%        'Location','SouthEast')
+% 
+% fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z1,s1,255));
+% fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(Fix',s1,255));
+
+%-----------------------
+% figure
+% 
+% subplot(4,2,1);
+% sf2 = 2^nextpow2(L); 
+% Y2 = fft(xx,sf2)/L;
+% f2 = Fs/2*linspace(0,1,sf2/2+1);
+% plot(f2,2*abs(Y2(1:sf2/2+1))) 
+% 
+% title("FFT dct fourier transform");
+% 
+% subplot(4,2,2);
+% plot(f1,Yp) 
+% 
+% title("noise z1 fourier transform");
