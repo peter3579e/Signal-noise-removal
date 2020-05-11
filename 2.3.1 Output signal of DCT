@@ -1,0 +1,13 @@
+close all, hold on
+ourputsig(1:2295)=0;
+ourputsig(1:294)=hello;
+ourputsig(294:589)=hello2;
+ourputsig(589:1291)=hello3;
+ourputsig(1291:1492)=hello4;
+ourputsig(1492:2295)=hello5;
+plot(freqHz6,ourputsig)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("The DCT result")
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(ourputsig,signal(1:2295),255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z,signal,255));
