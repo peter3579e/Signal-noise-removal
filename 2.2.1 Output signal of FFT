@@ -1,0 +1,14 @@
+close all, hold on
+outputsignalFF(1:2295)=0;
+outputsignalFF(1:294)=Ys(1:294);
+outputsignalFF(294:589)=Ys2(1:296);
+outputsignalFF(589:1291)=Ys3(1:703);
+outputsignalFF(1291:1492)=Ys4(1:202);
+outputsignalFF(1492:2295)=Ys5(1:804);
+
+plot(freqHz6,outputsignalFF)
+xlabel('Time(ms)')
+ylabel('PWR(V)','Rotation',0)
+title("The result of Fourier domain noise removal")
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(outputsignalFF,signal(1:2295),255));
+fprintf('\n The Peak-SNR value of noise signal is %0.4f', psnr(z,signal,255));
