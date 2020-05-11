@@ -1,0 +1,46 @@
+close all, hold on
+
+%------s1 noise remove
+
+o1 = 2^nextpow2(L); 
+o2= fft(noise,o1)/L;
+o3 = Fs/2*linspace(0,1,o1/2+1);
+o4=2*abs(o2(1:o1/2+1));
+% plot(noise)
+% xlabel('time(ms)')
+% ylabel('PWR(V)','Rotation',0)
+plot(o3,o4);
+xlabel('frequency(Hz)')
+ylabel('PWR(V)','Rotation',0)
+ figure 
+subplot(4,1,1)
+plot(s5)
+title("noise signal")
+[M,K]=size(s5);
+
+%---------------------------
+
+inputFFT=Y5;
+inputoriginal=s5;
+%threshold=0.9999.*Y4;
+threshold=inputFFT.*(inputFFT>abs(mean(o2(1:K))));
+%threshold=inputFFT.*(inputFFT>abs(mean(inputFFT(1:K))));
+%threshold=inputFFT*0.99;
+%threshold=inputFFT.*(inputFFT>1.12);
+Ys5=ifft(threshold,NFFT)*L;
+subplot(4,1,2)
+plot(Ys5(1:K))
+title("denoise signal")
+%---------------------------
+subplot(4,1,3)
+plot(f5,2*abs(Y4(1:sf3/2+1)))
+title("TFF noise signal")
+%---------------------------
+subplot(4,1,4)
+plot(f5,abs(threshold(1:1025)))
+title("TFF denoise signal")
+%---------------------------
+ o=psnr(Ys5(1:K),inputoriginal,255);
+% 
+fprintf('\n The Peak-SNR value of denoise is %0.4f', o);
+%fprintf('\n The Peak-SNR value of denoise is %0.4f', psnr(z1,inputoriginal,255));
